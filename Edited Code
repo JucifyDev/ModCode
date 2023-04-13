@@ -74,7 +74,7 @@ public class ActorTrait
             AssetManager.traits.add(goku);
             addTraitToLocalizedLibrary(goku.id, "Base Goku");
             PlayerConfig.unlockTrait(goku.id);
-            goku.frequency = 13; // set the frequency to 12
+            goku.frequency = 13; // set the frequency to 13
 			
 			//gokuss trait. 
             ActorTrait gokuss = new ActorTrait();
