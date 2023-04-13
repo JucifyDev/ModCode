@@ -1,0 +1,1072 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using NCMS;
+using NCMS.Utils;
+using UnityEngine;
+using ReflectionUtility;
+using HarmonyLib;
+using ai;
+using System.Reflection;
+using Newtonsoft.Json;
+
+namespace ExampleMod
+{
+    class Traits
+    {
+        public static void init()
+        {
+            loadedCustomTrait();
+        }
+
+        private static float no_chance = 0f;
+        private static float low_chance = 0.15f;
+        private static float medium_chance = 0.45f;
+        private static float extra_chance = 0.55f;
+        private static float high_chance = 0.85f;
+
+        public static void loadedCustomTrait()
+        {
+
+            //goku trait. 
+            ActorTrait goku = new ActorTrait();
+            goku.id = "Base";
+            goku.path_icon = "ui/icons/goku";
+            goku.birth = low_chance;
+            goku.inherit = medium_chance;
+            goku.can_be_given = true;
+            goku.base_stats[S.health] += 100;
+            goku.base_stats[S.mod_speed] = 1;      //reduce by 2
+            goku.base_stats[S.attack_speed] = 1;
+            goku.base_stats[S.damage] += 100;
+            goku.group_id = DarkieGroup.darkietraits;
+            goku.base_stats[S.knockback_reduction] += 1;
+			string[] oppositeArrHaw = new string[] { "goku",};
+            goku.oppositeArr = oppositeArrHaw;
+            AssetManager.traits.add(goku);
+            addTraitToLocalizedLibrary(goku.id, "Base Goku");
+            PlayerConfig.unlockTrait(goku.id);
+			
+			//gokuss trait. 
+            ActorTrait gokuss = new ActorTrait();
+            gokuss.id = "Super Saiyan";
+            gokuss.path_icon = "ui/icons/gokuss";
+            gokuss.birth = low_chance;
+            gokuss.inherit = medium_chance;
+            gokuss.can_be_given = true;
+            gokuss.base_stats[S.health] += 200;
+            gokuss.base_stats[S.mod_speed] = 2;      //reduce by 2
+            gokuss.base_stats[S.attack_speed] = 15;
+            gokuss.base_stats[S.damage] += 200;
+            gokuss.group_id = DarkieGroup.darkietraits;
+            gokuss.base_stats[S.knockback_reduction] += 2;
+            AssetManager.traits.add(gokuss);
+            addTraitToLocalizedLibrary(gokuss.id, "Super Saiyan Goku");
+            PlayerConfig.unlockTrait(gokuss.id);
+			
+			//gokussw trait. 
+            ActorTrait gokussw = new ActorTrait();
+            gokussw.id = "Super Saiyan White";
+            gokussw.path_icon = "ui/icons/gokussw";
+            gokussw.birth = low_chance;
+            gokussw.inherit = medium_chance;
+            gokussw.can_be_given = true;
+            gokussw.base_stats[S.health] += 400;
+            gokussw.base_stats[S.mod_speed] = 3;      //reduce by 2
+            gokussw.base_stats[S.attack_speed] = 25;
+            gokussw.base_stats[S.damage] += 400;
+            gokussw.group_id = DarkieGroup.darkietraits;
+            gokussw.base_stats[S.knockback_reduction] += 3;
+            AssetManager.traits.add(gokussw);
+            addTraitToLocalizedLibrary(gokussw.id, "Super Saiyan White Goku");
+            PlayerConfig.unlockTrait(gokussw.id);
+			
+			//gokussr trait. 
+            ActorTrait gokussr = new ActorTrait();
+            gokussr.id = "Super Saiyan Rose";
+            gokussr.path_icon = "ui/icons/gokussr";
+            gokussr.birth = low_chance;
+            gokussr.inherit = medium_chance;
+            gokussr.can_be_given = true;
+            gokussr.base_stats[S.health] += 800;
+            gokussr.base_stats[S.mod_speed] = 4;      //reduce by 2
+            gokussr.base_stats[S.attack_speed] = 35;
+            gokussr.base_stats[S.damage] += 800;
+            gokussr.group_id = DarkieGroup.darkietraits;
+            gokussr.base_stats[S.knockback_reduction] += 4;
+            AssetManager.traits.add(gokussr);
+            addTraitToLocalizedLibrary(gokussr.id, "Super Saiyan Rose Goku");
+            PlayerConfig.unlockTrait(gokussr.id);
+			
+			//gokussg trait. 
+            ActorTrait gokussg = new ActorTrait();
+            gokussg.id = "Super Saiyan God";
+            gokussg.path_icon = "ui/icons/gokussg";
+            gokussg.birth = low_chance;
+            gokussg.inherit = medium_chance;
+            gokussg.can_be_given = true;
+            gokussg.base_stats[S.health] += 1200;
+            gokussg.base_stats[S.mod_speed] = 5;      //reduce by 2
+            gokussg.base_stats[S.attack_speed] = 45;
+            gokussg.base_stats[S.damage] += 1200;
+            gokussg.group_id = DarkieGroup.darkietraits;
+            gokussg.base_stats[S.knockback_reduction] += 5;
+            AssetManager.traits.add(gokussg);
+            addTraitToLocalizedLibrary(gokussg.id, "Super Saiyan God Goku");
+            PlayerConfig.unlockTrait(gokussg.id);
+			
+			//gokussg trait. 
+            ActorTrait gokulgn = new ActorTrait();
+            gokulgn.id = "Legendary Super Saiyan";
+            gokulgn.path_icon = "ui/icons/gokulgn";
+            gokulgn.birth = low_chance;
+            gokulgn.inherit = medium_chance;
+            gokulgn.can_be_given = true;
+            gokulgn.base_stats[S.health] += 1600;
+            gokulgn.base_stats[S.mod_speed] = 6;      //reduce by 2
+            gokulgn.base_stats[S.attack_speed] = 50;
+            gokulgn.base_stats[S.damage] += 1600;
+            gokulgn.group_id = DarkieGroup.darkietraits;
+            gokulgn.base_stats[S.knockback_reduction] += 6;
+            AssetManager.traits.add(gokulgn);
+            addTraitToLocalizedLibrary(gokulgn.id, "Legendary Super Saiyan Goku");
+            PlayerConfig.unlockTrait(gokulgn.id);
+			
+			//gokublue trait. 
+            ActorTrait gokublue = new ActorTrait();
+            gokublue.id = "Super Saiyan Blue";
+            gokublue.path_icon = "ui/icons/gokublue";
+            gokublue.birth = low_chance;
+            gokublue.inherit = medium_chance;
+            gokublue.can_be_given = true;
+            gokublue.base_stats[S.health] += 1800;
+            gokublue.base_stats[S.mod_speed] = 7;      //reduce by 2
+            gokublue.base_stats[S.attack_speed] = 65;
+            gokublue.base_stats[S.damage] += 1800;
+            gokublue.group_id = DarkieGroup.darkietraits;
+            gokublue.base_stats[S.knockback_reduction] += 7;
+            AssetManager.traits.add(gokublue);
+            addTraitToLocalizedLibrary(gokublue.id, "Super Saiyan Blue Goku");
+            PlayerConfig.unlockTrait(gokublue.id);
+			
+			//gokumui trait. 
+            ActorTrait gokumui = new ActorTrait();
+            gokumui.id = "Mastered Ultra Instinct";
+            gokumui.path_icon = "ui/icons/gokumui";
+            gokumui.birth = low_chance;
+            gokumui.inherit = medium_chance;
+            gokumui.can_be_given = true;
+            gokumui.base_stats[S.health] += 2200;
+            gokumui.base_stats[S.mod_speed] = 8;      //reduce by 2
+            gokumui.base_stats[S.attack_speed] = 85;
+            gokumui.base_stats[S.damage] += 2200;
+            gokumui.group_id = DarkieGroup.darkietraits;
+            gokumui.base_stats[S.knockback_reduction] += 8;
+            AssetManager.traits.add(gokumui);
+            addTraitToLocalizedLibrary(gokumui.id, "Mastered Ultra Instinct Goku");
+            PlayerConfig.unlockTrait(gokumui.id);
+			
+			//gokumui trait. 
+            ActorTrait gokux = new ActorTrait();
+            gokux.id = "Super Saiyan X";
+            gokux.path_icon = "ui/icons/gokux";
+            gokux.birth = low_chance;
+            gokux.inherit = medium_chance;
+            gokux.can_be_given = true;
+            gokux.base_stats[S.health] += 2800;
+            gokux.base_stats[S.mod_speed] = 9;      //reduce by 2
+            gokux.base_stats[S.attack_speed] = 100;
+            gokux.base_stats[S.damage] += 2800;
+            gokux.group_id = DarkieGroup.darkietraits;
+            gokux.base_stats[S.knockback_reduction] += 9;
+            AssetManager.traits.add(gokux);
+            addTraitToLocalizedLibrary(gokux.id, "X Goku");
+            PlayerConfig.unlockTrait(gokux.id);
+			
+			//gokuzeno trait. 
+            ActorTrait gokuzeno = new ActorTrait();
+            gokuzeno.id = "Super Saiyan Zeno";
+            gokuzeno.path_icon = "ui/icons/gokuzeno";
+            gokuzeno.birth = low_chance;
+            gokuzeno.inherit = medium_chance;
+            gokuzeno.can_be_given = true;
+            gokuzeno.base_stats[S.health] += 3000;
+            gokuzeno.base_stats[S.mod_speed] = 10;      //reduce by 2
+            gokuzeno.base_stats[S.attack_speed] = 115;
+            gokuzeno.base_stats[S.damage] += 3000;
+            gokuzeno.group_id = DarkieGroup.darkietraits;
+            gokuzeno.base_stats[S.knockback_reduction] += 10;
+            AssetManager.traits.add(gokuzeno);
+            addTraitToLocalizedLibrary(gokuzeno.id, "Zeno Goku");
+            PlayerConfig.unlockTrait(gokuzeno.id);
+			
+			//gokuerror trait. 
+            ActorTrait gokuerror = new ActorTrait();
+            gokuerror.id = "Super Saiyan Error";
+            gokuerror.path_icon = "ui/icons/gokuerror";
+            gokuerror.birth = low_chance;
+            gokuerror.inherit = medium_chance;
+            gokuerror.can_be_given = true;
+            gokuerror.base_stats[S.health] += 4200;
+            gokuerror.base_stats[S.mod_speed] = 11;      //reduce by 2
+            gokuerror.base_stats[S.attack_speed] = 150;
+            gokuerror.base_stats[S.damage] += 4200;
+            gokuerror.group_id = DarkieGroup.darkietraits;
+            gokuerror.base_stats[S.knockback_reduction] += 11;
+            AssetManager.traits.add(gokuerror);
+            addTraitToLocalizedLibrary(gokuerror.id, "AN ERROR HAS OCCURED");
+            PlayerConfig.unlockTrait(gokuerror.id);
+			
+			//gokusun trait. 
+            ActorTrait gokusun = new ActorTrait();
+            gokusun.id = "Sun Goku";
+            gokusun.path_icon = "ui/icons/gokusun";
+            gokusun.birth = low_chance;
+            gokusun.inherit = medium_chance;
+            gokusun.can_be_given = true;
+            gokusun.base_stats[S.health] += 4500;
+            gokusun.base_stats[S.mod_speed] = 12;      //reduce by 2
+            gokusun.base_stats[S.attack_speed] = 175;
+            gokusun.base_stats[S.damage] += 4500;
+            gokusun.group_id = DarkieGroup.darkietraits;
+            gokusun.base_stats[S.knockback_reduction] += 12;
+            AssetManager.traits.add(gokusun);
+            addTraitToLocalizedLibrary(gokusun.id, "GODS ARE MAD!!!");
+            PlayerConfig.unlockTrait(gokusun.id);
+			
+			//gokumoon trait. 
+            ActorTrait gokumoon = new ActorTrait();
+            gokumoon.id = "Moon Goku";
+            gokumoon.path_icon = "ui/icons/gokumoon";
+            gokumoon.birth = low_chance;
+            gokumoon.inherit = medium_chance;
+            gokumoon.can_be_given = true;
+            gokumoon.base_stats[S.health] += 5000;
+            gokumoon.base_stats[S.mod_speed] = 13;      //reduce by 2
+            gokumoon.base_stats[S.attack_speed] = 200;
+            gokumoon.base_stats[S.damage] += 5000;
+            gokumoon.group_id = DarkieGroup.darkietraits;
+            gokumoon.base_stats[S.knockback_reduction] += 13;
+            AssetManager.traits.add(gokumoon);
+            addTraitToLocalizedLibrary(gokumoon.id, "The Moon Is Dark");
+            PlayerConfig.unlockTrait(gokumoon.id);
+        }
+	private static bool traitStealing(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+            if(pTarget.a != null)
+            {
+                pSelf.a.removeTrait("miracle_born");
+                pSelf.a.removeTrait("scar_of_divinity");  //kinda hate this trait
+
+                if (!pTarget.a.hasTrait("Power Mimicry"))    //only works if the enemies doesn't have this trait too.
+                {
+                    pSelf.a.takeItems(pTarget.a, false);
+                    for (int i = 0; i < pTarget.a.data.traits.Count; i++)
+                    {
+                        string text = pTarget.a.data.traits[i];
+                        if (!(text == "Power Mimicry"))
+                        {
+                            pSelf.a.addTrait(text, true);
+                        }
+                    }
+                    if (Toolbox.randomChance(0.6f))
+                    {
+                        pSelf.a.removeTrait("Power Mimicry");
+                    }
+                    pTarget.addStatusEffect("slowness", 3f);
+                }
+            }
+            return true;
+        }
+
+        private static bool medicSuperHealing(BaseSimObject pTarget, WorldTile pTile)
+        {
+            pTarget.a.spawnParticle(Toolbox.color_heal);
+            pTarget.a.spawnParticle(Toolbox.color_heal);
+            if (!pTarget.a.hasTrait("immune"))
+                pTarget.a.addTrait("immune");
+            World.world.getObjectsInChunks(pTile, 5, MapObjectType.Actor);
+            for (int i = 0; i < World.world.temp_map_objects.Count; i++)
+            {
+                Actor actor = (Actor)World.world.temp_map_objects[i];
+                if (actor.a != null)
+                {
+                    if ((actor.kingdom == pTarget.kingdom))
+                    {
+                        removeBadTrait(actor, null);
+                        if(actor.a.data.health < actor.a.getMaxHealth())
+                        {
+                            actor.a.restoreHealth(10);
+                            actor.a.spawnParticle(Toolbox.color_heal);
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        private static bool removeBadTrait(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                //insert bad traits here
+                pTarget.a.removeTrait("madness");
+                pTarget.a.removeTrait("evil");
+                pTarget.a.removeTrait("cursed");
+                pTarget.a.removeTrait("greedy");
+                pTarget.a.removeTrait("deceitful");
+                pTarget.a.removeTrait("pyromaniac");
+                pTarget.a.removeTrait("infected");
+                pTarget.a.removeTrait("mushSpores");
+                pTarget.a.removeTrait("tumorInfection");
+                
+                pTarget.a.removeTrait("miracle_born");
+                pTarget.a.removeTrait("scar_of_divinity");  //kinda hate this trait
+            }
+            
+            return true;
+        }
+
+        private static bool rebornANew(BaseSimObject pTarget, WorldTile pTile)
+        {
+            Actor a = pTarget.a;
+            a.addTrait("fire_proof"); //what kind of phoenix that got burned lol
+            a.removeTrait("Pheonix");
+            var act = World.world.units.createNewUnit(a.asset.id, pTile, 0f);
+            ActorTool.copyUnitToOtherUnit(a, act);
+            if (pTarget.kingdom.isAlive())
+                act.kingdom = pTarget.kingdom;
+            act.data.setName(pTarget.a.getName());
+            act.data.health += 1000;
+            act.addStatusEffect("Phoenix", 7f);
+            act.a.makeWait(7);
+            act.addStatusEffect("invincible", 5);
+
+            //spawn effect for cooler looks
+            ActionLibrary.castLightning(null, act, null);
+            PowerLibrary pb = new PowerLibrary();
+            pb.divineLightFX(pTarget.a.currentTile, null);
+            EffectsLibrary.spawnExplosionWave(pTile.posV3, 1f, 1f);
+            World.world.applyForce(pTile, 10, 1.5f, true, true, 0, null, null, null);
+
+            return true;
+        }
+
+        //when the orginal die, all clone of her must dies along side with her
+        private static bool killAllClone(BaseSimObject pTarget, WorldTile pTile)
+        {
+            Actor a = pTarget.a;
+            foreach (Actor clone in MapBox.instance.units)
+            {
+                if (clone.a.hasTrait("Clone") && clone.a.getName().Equals(a.getName()))
+                {
+                    ActionLibrary.castLightning(null, clone, null);
+                    clone.a.killHimself();
+                    continue;
+                }
+            }
+            return true;
+        }
+
+        //clone seven
+        private static bool clonePower(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a.hasTrait("Clone"))
+            {
+                pTarget.a.removeTrait("DupliKate");
+                return false;
+            }
+            Actor a = pTarget.a;
+            int count = 0;
+            if (a.data.custom_data_int == null || !a.data.custom_data_int.TryGetValue("cloneCount", out count))
+            {
+                a.data.set("cloneCount", 0);
+            }
+
+            if (count < 7)
+            {
+                var act = World.world.units.createNewUnit(a.asset.id, pTile, 0f);
+                ActorTool.copyUnitToOtherUnit(a, act);
+                if (pTarget.kingdom.isAlive())
+                    act.kingdom = pTarget.kingdom;
+                act.addTrait("Clone");
+                act.data.setName(pTarget.a.getName());
+                act.data.health += 1300;
+                act.removeTrait("DupliKate");
+                count++;
+                a.data.set("cloneCount", count);
+            }
+
+            return true;
+        }
+
+        private static bool Insatiable(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (pTarget.a.data.hunger > 20)
+                {
+                    pTarget.a.data.hunger = 1;
+                }
+            }
+            return true;
+        }
+
+        private static bool fullHunger(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (pTarget.a.data.hunger < 70)
+                {
+                    pTarget.a.data.hunger = 99;
+                }
+            }
+            return true;
+        }
+
+        private static bool eternityLife(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (pTarget.a.data.getAge() > 16)
+                {
+                    //pTarget.a.data.created_time = 0;
+                    pTarget.a.data.age_overgrowth = 23;
+                    Debug.Log("Real age is: " + pTarget.a.getAge());
+                }
+            }
+            return true;
+        }
+
+        //kinda buggy method to choose city leader
+        private static bool becomeLeader(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (pTarget.a.city != null)
+                {
+                    if (pTarget.a.isProfession(UnitProfession.King))
+                    {
+                        return true;
+                    }
+                    if (!(pTarget.a.city.leader.hasTrait("City Leader")))
+                    {
+                        pTarget.a.city.leader = pTarget.a;
+                        pTarget.a.city.leader.setProfession(UnitProfession.Leader);
+                        pTarget.a.city.data.leaderID = pTarget.a.data.id;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private static bool werewolfSpecialAttack(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pSelf.a != null)
+            {
+                if (pSelf.a.attackedBy == true)
+                {
+                    if (!pSelf.a.hasStatus("Wolf Attack"))
+                    {
+                        pSelf.a.addStatusEffect("Wolf Attack");
+                    }
+                }
+
+            }
+            return true;
+        }
+
+
+        //if moon era is active, turn into werewolves
+        private static bool turnWerewolves(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (World.world_era.id == "age_moon")       //only in age of moon
+                {
+                    if (!pTarget.a.hasTrait("The Werewolf"))
+                    {
+                        pTarget.a.addTrait("The Werewolf");
+                    }
+                }
+                else if (World.world_era.id == "age_dark")
+                {
+                    if (Toolbox.randomChance(0.0001f))
+                    {
+                        if (!pTarget.a.hasTrait("The Werewolf"))
+                        {
+                            pTarget.a.addTrait("The Werewolf");
+                        }
+                    }
+                }
+                else
+                {
+                    if (pTarget.a.hasTrait("The Werewolf"))          //no other age can have this trait
+                    {
+                        pTarget.a.removeTrait("The Werewolf");
+                    }
+                }
+
+
+            }
+            return true;
+        }
+
+        private static bool livingHellEffect(BaseSimObject pTarget, WorldTile pTile)
+        {
+            pTarget.a.spawnParticle(Toolbox.color_plague);
+            pTarget.a.spawnParticle(Toolbox.color_plague);
+            pTarget.a.spawnParticle(Toolbox.color_plague);
+            pTarget.a.asset.canBeKilledByLifeEraser = false;        //not even life eraser can save you from this eternal nightmare that I made for you
+            pTarget.a.asset.canBeKilledByDivineLight = false;
+            pTarget.a.addTrait("madness");
+            pTarget.a.removeTrait("cursed");
+
+            //spawn prison
+
+            //int count = 0;
+            //if (pTarget.a.data.custom_data_int == null || !pTarget.a.data.custom_data_int.TryGetValue("skullCount", out count))
+            //{
+            //    pTarget.a.data.set("skullCount", 0);
+            //}
+
+            //if (count < 2)
+            //{
+            //    PowerLibrary a = new PowerLibrary(); //test
+            //    a.spawnPrinter(pTarget.a.currentTile, "printer_skull");
+            //    count++;
+            //    pTarget.a.data.set("skullCount", count);
+            //}
+
+
+            if (pTarget.a != null)
+            {
+                pTarget.a.data.favorite = true; //for easier finding
+                if (pTarget.a.kingdom != null)         //nobody will ever accept you
+                {
+                    pTarget.a.kingdom.removeUnit(pTarget.a);
+                }
+                if (pTarget.a.data.health < pTarget.a.getMaxHealth() / 2)        //You don't get to die that easy, little piece of sh!t
+                {
+                    pTarget.a.restoreHealth(9999);
+                }
+                if (pTarget.a.data.health < pTarget.a.getMaxHealth() / 10)        //tele random
+                {
+                    ActionLibrary.teleportRandom(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.2f))
+                {
+                    MapBox.instance.dropManager.spawn(pTarget.currentTile, "acid", 10f, -1f);
+                    MapBox.instance.dropManager.spawn(pTarget.currentTile, "fire", 5f, -1f);
+                    MapBox.instance.dropManager.spawn(pTarget.currentTile, "acid", 10f, -1f);
+                    MapBox.instance.dropManager.spawn(pTarget.currentTile, "fire", 5f, -1f);
+                    MapBox.instance.dropManager.spawn(pTarget.currentTile, "acid", 10f, -1f);
+                    MapBox.instance.dropManager.spawn(pTarget.currentTile, "fire", 5f, -1f);
+                }
+                if (Toolbox.randomChance(0.1f))
+                {
+                    pTarget.addStatusEffect("frozen", 3);
+                }
+                if (Toolbox.randomChance(0.1f))
+                {
+                    pTarget.addStatusEffect("poisoned", 13);
+                }
+                if (Toolbox.randomChance(0.1f))
+                {
+                    ActionLibrary.castLightning(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.2f))
+                {
+                    ActionLibrary.castCurses(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.05f))
+                {
+                    EffectsLibrary.spawn("fx_meteorite", pTarget.currentTile, "meteorite_disaster", null, 0f, -1f, -1f);    //spawn 1 meteorite
+                }
+            }
+            return true;
+        }
+
+        private static bool commanderEffect(BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (!pTarget.a.isProfession(UnitProfession.Warrior))
+                {
+                    pTarget.a.setProfession(UnitProfession.Warrior);
+                    pTarget.a.setGroupLeader(true);
+                }
+                if (pTarget.a.kingdom.getArmy() < pTarget.a.kingdom.countArmyMax())
+                {
+                    World.world.getObjectsInChunks(pTile, 5, MapObjectType.Actor);
+                    for (int i = 0; i < World.world.temp_map_objects.Count; i++)
+                    {
+                        Actor actor = (Actor)World.world.temp_map_objects[i];
+                        if (actor.a != null)
+                        {
+                            if ((actor.kingdom == pTarget.kingdom))
+                            {
+                                if (!actor.a.isProfession(UnitProfession.King) || !actor.a.isProfession(UnitProfession.Leader))
+                                {
+                                    if (!actor.a.isProfession(UnitProfession.Warrior) == true)
+                                    {
+                                        actor.a.setProfession(UnitProfession.Warrior);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
+
+
+        //shrink down
+        private static bool addEffectShrinkDown(BaseSimObject pTarget, WorldTile pTile)
+        {
+            //shrink down size
+            if (pTarget.a.attackedBy == true)
+            {
+                if (!pTarget.a.hasStatus("Ant Man"))
+                {
+                    pTarget.a.addStatusEffect("Ant Man");
+                }
+            }
+            return true;
+        }
+
+        private static bool titanShifterSpecialEffect(BaseSimObject pTarget, WorldTile pTile)
+        {
+            //turn into titan shifter
+            if (pTarget.a.attackedBy == true)
+            {
+                if (!pTarget.a.hasStatus("Titan Shifter"))
+                {
+                    pTarget.a.addTrait("fire_proof");
+                    pTarget.a.addStatusEffect("invincible");
+                    pTarget.a.addStatusEffect("Titan Shifter");
+                    EffectsLibrary.spawn("fx_nuke_flash", pTarget.currentTile, null, null, 0f, -1f, -1f);    //flash
+                    ActionLibrary.castLightning(null, pTarget, pTarget.currentTile);
+                    EffectsLibrary.spawnExplosionWave(pTile.posV3, 1f, 1f);
+                    World.world.applyForce(pTarget.currentTile, 10, 1.5f, true, true, 0, null, null, null);
+                }
+            }
+            return true;
+        }
+
+        private static bool titanShifterAttackEffect(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (pSelf.hasStatus("Titan Shifter"))
+                {
+                    if (Toolbox.randomChance(0.4f))
+                    {
+                        EffectsLibrary.spawnExplosionWave(pTile.posV3, 1f, 1f);
+                        World.world.applyForce(pTarget.currentTile, 10, 1.5f, true, true, 0, null, null, null);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+
+        private static bool convertUnit(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget.a != null)
+            {
+                if (Toolbox.randomChance(0.2f))
+                {
+                    pTarget.kingdom = pSelf.kingdom;
+                    pTarget.a.addTrait("Chained");
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool causeShockwave(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (Toolbox.randomChance(0.4f))
+            {
+                EffectsLibrary.spawnExplosionWave(pTile.posV3, 1f, 1f);
+                World.world.applyForce(pTile, 10, 1.5f, true, true, 0, null, null, null);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool mageSparklingEffect(BaseSimObject pTarget, WorldTile pTile)
+        {
+
+            Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+            a.spawnParticle(Color.white);
+            a.spawnParticle(Color.cyan);
+            a.spawnParticle(Color.white);
+            a.spawnParticle(Color.cyan);
+            a.spawnParticle(Color.green);
+            a.spawnParticle(Color.white);
+            a.spawnParticle(Color.cyan);
+            a.spawnParticle(Color.cyan);
+
+            if (!a.hasTrait("fire_proof"))
+                a.addTrait("fire_proof");
+            if (a.hasTrait("cursed"))
+                a.removeTrait("cursed");
+
+            if (Toolbox.randomChance(0.02f))
+            {
+                a.doCastAnimation();
+                ActionLibrary.teleportRandom(null, a, null);
+            }
+            if (pTarget.a.data.health <= 50)
+            {
+                ActionLibrary.castBloodRain(null, pTarget, null);
+            }
+            return true;
+        }
+
+        public static bool mageAttack(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+
+            if (pTarget != null)
+            {
+                Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+
+                if (Toolbox.randomChance(0.2f))
+                {
+
+                    MapBox.instance.dropManager.spawn(pTile, "fire", 5f, -1f);
+                    MapBox.instance.dropManager.spawn(pTile, "acid", 5f, -1f);
+                    MapBox.instance.dropManager.spawn(pTile, "fire", 5f, -1f);
+                }
+                if (Toolbox.randomChance(0.02f))
+                {
+                    ActionLibrary.castCurses(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.08f))
+                {
+                    ActionLibrary.addFrozenEffectOnTarget(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.05f))
+                {
+                    ActionLibrary.castShieldOnHimself(null, pSelf, null);
+                }
+                if (Toolbox.randomChance(0.04f))
+                {
+                    ActionLibrary.teleportRandom(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.1f))
+                {
+                    ActionLibrary.castLightning(null, pTarget, null);
+                }
+                if (Toolbox.randomChance(0.0001f))
+                {
+                    EffectsLibrary.spawn("fx_meteorite", pTarget.currentTile, "meteorite_disaster", null, 0f, -1f, -1f);    //spawn 1 meteorite
+                    pSelf.a.addStatusEffect("invincible", 5f);
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+        public static bool teleportToSpecificLocation(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+
+            string text = pTarget.a.asset.effect_teleport;
+            if (string.IsNullOrEmpty(text))
+            {
+                text = "fx_teleport_blue";
+            }
+            EffectsLibrary.spawnAt(text, pTarget.currentPosition, pTarget.a.stats[S.scale]);
+            BaseEffect baseEffect = EffectsLibrary.spawnAt(text, pTile.posV3, pTarget.a.stats[S.scale]);
+            if (baseEffect != null)
+            {
+                baseEffect.spriteAnimation.setFrameIndex(9);
+            }
+            pTarget.a.cancelAllBeh(null);
+            pTarget.a.spawnOn(pTile, 0f);
+            return true;
+        }
+
+        public static void addTraitToLocalizedLibrary(string id, string description)
+        {
+            string language = Reflection.GetField(LocalizedTextManager.instance.GetType(), LocalizedTextManager.instance, "language") as string;
+            Dictionary<string, string> localizedText = Reflection.GetField(LocalizedTextManager.instance.GetType(), LocalizedTextManager.instance, "localizedText") as Dictionary<string, string>;
+            localizedText.Add("trait_" + id, id);
+            localizedText.Add("trait_" + id + "_info", description);
+        }
+
+        private static void addTraitGroupToLocalizedLibrary(string planguage, string id, string name)
+        {
+            string language = Reflection.GetField(LocalizedTextManager.instance.GetType(), LocalizedTextManager.instance, "language") as string;
+            if (planguage == language)
+            {
+                Dictionary<string, string> localizedText = Reflection.GetField(LocalizedTextManager.instance.GetType(), LocalizedTextManager.instance, "localizedText") as Dictionary<string, string>;
+                localizedText.Add("trait_group_" + id, name);
+            }
+        }
+
+        public static bool turtleGuyAttack(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile)
+        {
+            if (pTarget != null)
+            {
+                Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+                if (Toolbox.randomChance(0.3f)) //30%
+                {
+                    ActionLibrary.addSlowEffectOnTarget(null, pTarget, null);
+
+                }
+                return true;
+            }
+            return false;
+        }
+
+        //strike down lightning ffrom Thor
+        public static bool ThorAtackEffect(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            if (pTarget != null)
+            {
+                Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+                if(a!= null)
+                {
+                    if (Toolbox.randomChance(0.3f)) //30%
+                    {
+                        ActionLibrary.castLightning(null, pTarget, null);
+                        ActionLibrary.addBurningEffectOnTarget(null, pTarget, null);
+                        //pTarget.CallMethod("addStatusEffect", "burning", -1f);
+
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public static bool ThorSparklingEffect(BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+            a.addTrait("fire_proof");
+            a.spawnParticle(Color.white);
+            a.spawnParticle(Color.blue);
+            a.spawnParticle(Color.white);
+            return true;
+        }
+
+        //this has 30% to teleport enemies to random part of the world
+        public static bool NightcrawlerAtackEffect(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            if (pTarget.a != null)
+            {
+                if (Toolbox.randomChance(0.4f))
+                    teleportToSpecificLocation(null, pSelf, pTarget.currentTile);
+                if (Toolbox.randomChance(0.3f)) //30%
+                {
+                    ActionLibrary.teleportRandom(null, pTarget, null);
+
+                }
+                return true;
+            }
+            return false;
+        }
+        public static bool NightcrawlerSparklingEffect(BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+            a.spawnParticle(Color.black);
+            if (pTarget.a != null)
+            {
+                if (Toolbox.randomChance(0.1f))
+                {
+                    //ActionLibrary.teleportRandom(null, pTarget, null);
+                    teleportToSpecificLocation(null, pTarget, pTarget.a.tileTarget);  //testing out
+                }
+                if (Toolbox.randomChance(0.05f))
+                {
+                    ActionLibrary.teleportRandom(null, pTarget, null);
+                }
+
+            }
+
+            return true;
+        }
+
+        //he wil use shield when in combat
+        public static bool ShieldGuyAttackEffect(BaseSimObject pSelf, BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            if (pTarget != null)
+            {
+                Actor a = pTarget.a;
+                ActionLibrary.castShieldOnHimself(null, pSelf, null);
+                World.world.getObjectsInChunks(pTile, 5, MapObjectType.Actor);
+                for (int i = 0; i < World.world.temp_map_objects.Count; i++)
+                {
+                    Actor actor = (Actor)World.world.temp_map_objects[i];
+                    if ((actor.kingdom == pSelf.kingdom))
+                    {
+                        actor.addStatusEffect("shield", 10f);
+                        actor.addStatusEffect("caffeinated", 15f);
+                        actor.addStatusEffect("powerup", 15f);
+                    }
+                }
+            }
+            return false;
+        }
+
+
+
+        public static bool spawnWolfBeasts(BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            ActorData pData = pTarget.a.data;
+
+            int count = 0;
+            if (pData.custom_data_int == null || !pData.custom_data_int.TryGetValue("wolfCount", out count))
+            {
+                pData.set("wolfCount", 0);
+            }
+
+
+            if (count < 3)
+            {
+                var act = World.world.units.createNewUnit("wolf", pTile);
+                act.kingdom = pTarget.kingdom;
+                act.addTrait("Tamed Beasts");
+                act.goTo(pTarget.currentTile);
+                act.data.setName(pTarget.a.getName());
+
+                Main.listOfTamedBeasts.Add(act, pTarget.a);     //add the beast and actor who spawned them into custom list
+                count++;
+                pData.set("wolfCount", count);
+            }
+
+            return false;
+        }
+
+        public static bool spawnBearBeasts(BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+            ActorData pData = (ActorData)Reflection.GetField(typeof(Actor), a, "data");
+            int count = 0;
+            if (pData.custom_data_int == null || !pData.custom_data_int.TryGetValue("bearCount", out count))
+            {
+                pData.set("bearCount", 0);
+            }
+
+            if (count < 2)
+            {
+                var act = World.world.units.createNewUnit("bear", pTile);
+                act.kingdom = pTarget.kingdom;
+                act.goTo(pTarget.currentTile);
+                act.addTrait("Tamed Beasts");
+                act.data.setName(pTarget.a.getName());
+
+                Main.listOfTamedBeasts.Add(act, pTarget.a);
+                count++;
+                pData.set("bearCount", count);
+            }
+            return false;
+        }
+
+        public static bool spawnDragon(BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+            ActorData pData = (ActorData)Reflection.GetField(typeof(Actor), a, "data");
+
+            int count = 0;
+            if (pData.custom_data_int == null || !pData.custom_data_int.TryGetValue("dragonCount", out count))
+            {
+                pData.set("dragonCount", 0);
+            }
+
+            if (count < 1)
+            {
+                if (Toolbox.randomChance(0.2f))
+                {
+                    var act = World.world.units.createNewUnit("zombie_dragon", pTile);
+                    act.kingdom = pTarget.kingdom;
+                    act.addTrait("Tamed Beasts");
+                    act.data.setName(pTarget.a.getName());
+                    Main.listOfTamedBeasts.Add(act, pTarget.a);
+                    count++;
+                    pData.set("dragonCount", count);
+                }
+                else
+                {
+                    var act = World.world.units.createNewUnit("dragon", pTile);
+                    act.kingdom = pTarget.kingdom;
+                    act.addTrait("Tamed Beasts");
+                    act.data.setName(pTarget.a.getName());
+                    Main.listOfTamedBeasts.Add(act, pTarget.a);
+                    count++;
+                    pData.set("dragonCount", count);
+
+                }
+            }
+            return false;
+        }
+
+        public static bool spawnBandit(BaseSimObject pTarget, WorldTile pTile = null)
+        {
+            Actor a = Reflection.GetField(pTarget.GetType(), pTarget, "a") as Actor;
+
+            ActorData pData = (ActorData)Reflection.GetField(typeof(Actor), a, "data");
+
+            int count = 0;
+            if (pData.custom_data_int == null || !pData.custom_data_int.TryGetValue("banditCount", out count))
+            {
+                pData.set("banditCount", 0);
+            }
+
+            if (count < 4)
+            {
+                var act = World.world.units.createNewUnit("bandit", pTile);
+                act.kingdom = pTarget.kingdom;
+                act.goTo(pTarget.currentTile);
+                act.data.setName(pTarget.a.getName());
+                count++;
+                pData.set("banditCount", count);
+            }
+            return false;
+        }
+
+        //This will make all tamed beast trait to follow its master
+        public static bool followMaster(BaseSimObject pTarget, WorldTile pTile)
+        {
+            //pTile = pTarget.a.currentTile;  //get the tile
+            if (Toolbox.randomChance(0.09f))
+            {
+                foreach (KeyValuePair<Actor, Actor> entry in Main.listOfTamedBeasts)    //Value is actor who spawns beasts, Key is beasts 
+                {
+                    if (entry.Value.a.isAlive())
+                    {
+                        if (entry.Key.a.is_moving)
+                        {
+                            entry.Key.goTo(entry.Value.currentTile);
+                            continue;
+                        }
+
+                        if (entry.Value.a.kingdom != entry.Key.a.kingdom)       //beasts will now switch kingdom if beast master switch kingdom
+                        {
+                            entry.Key.a.kingdom = pTarget.kingdom;
+                            continue;
+                        }
+                    }
+                    if (entry.Key.a.data.hunger < 50)
+                    {
+                        entry.Key.a.data.hunger = 90;
+                    }
+
+                }
+            }
+            return false;
+        }
+
+		
+	}
+}
